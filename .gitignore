@@ -1,0 +1,13 @@
+.dart_tool/
+.packages
+.pub-cache/
+build/
+*.iml
+.idea/
+.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
+android/.gradle/
+ios/Pods/
+macos/Pods/
+windows/flutter/ephemeral/
