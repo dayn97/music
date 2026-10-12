@@ -151,8 +151,17 @@ class _MusicHomePageState extends State<MusicHomePage> {
 
   Widget _nav(IconData icon, String label, bool active, [String? count]) => Container(
         margin: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(color: active ? const Color(0xfff1f3f7) : Colors.transparent, borderRadius: BorderRadius.circular(12)),
-        child: ListTile(dense: true, visualDensity: VisualDensity.compact, leading: Icon(icon, size: 19, color: active ? const Color(0xfff16b53) : const Color(0xffa1a5ae)), title: Text(label, style: TextStyle(fontSize: 13, fontWeight: active ? FontWeight.bold : FontWeight.normal, color: active ? const Color(0xff24262d) : const Color(0xff888b94))), trailing: count == null ? null : Text(count, style: const TextStyle(fontSize: 11, color: Color(0xffa6a9b1)))))
+        decoration: BoxDecoration(
+          color: active ? const Color(0xfff1f3f7) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: ListTile(
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          leading: Icon(icon, size: 19, color: active ? const Color(0xfff16b53) : const Color(0xffa1a5ae)),
+          title: Text(label, style: TextStyle(fontSize: 13, fontWeight: active ? FontWeight.bold : FontWeight.normal, color: active ? const Color(0xff24262d) : const Color(0xff888b94))),
+          trailing: count == null ? null : Text(count, style: const TextStyle(fontSize: 11, color: Color(0xffa6a9b1))),
+        ),
       );
 
   Widget _playlist(String label, Color color, String count) => ListTile(dense: true, visualDensity: VisualDensity.compact, contentPadding: const EdgeInsets.symmetric(horizontal: 12), leading: CircleAvatar(radius: 4, backgroundColor: color), title: Text(label, style: const TextStyle(fontSize: 13, color: Color(0xff555861))), trailing: Text(count, style: const TextStyle(fontSize: 11, color: Color(0xffb1b4bc))));
@@ -173,7 +182,37 @@ class _MusicHomePageState extends State<MusicHomePage> {
 
   Widget _buildTrackCard(bool compact) => Card(color: Colors.white, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: Color(0xffeaecf1))), clipBehavior: Clip.antiAlias, child: Column(children: [Padding(padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18), child: Row(children: [const Text('歌曲', style: TextStyle(fontWeight: FontWeight.bold)), const SizedBox(width: 24), const Text('专辑', style: TextStyle(color: Color(0xffa1a4ac))), const SizedBox(width: 24), const Text('文件夹', style: TextStyle(color: Color(0xffa1a4ac))), const Spacer(), Text('${_visibleTracks.length} 首', style: const TextStyle(fontSize: 12, color: Color(0xff9699a2)))])), const Divider(height: 1, color: Color(0xfff0f1f4)), ..._visibleTracks.asMap().entries.map((entry) => _trackRow(_tracks.indexOf(entry.value), entry.value, compact))]));
 
-  Widget _trackRow(int index, Track track, bool compact) => InkWell(onTap: () => _play(index), child: Padding(padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), child: Row(children: [Container(width: 40, height: 40, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), gradient: LinearGradient(colors: track.encrypted ? [const Color(0xfff5aa93), const Color(0xffe85b48)] : [const Color(0xff8aa9f5), const Color(0xff547ce2)])), child: const Icon(Icons.music_note, color: Colors.white, size: 20)), const SizedBox(width: 12), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(track.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)), const SizedBox(height: 4), Text(track.artist, style: const TextStyle(fontSize: 11, color: Color(0xffa0a3ab)))])), if (!compact) Expanded(child: Text(track.album, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Color(0xff8d9099))), flex: 1), Container(padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4), decoration: BoxDecoration(color: track.encrypted ? const Color(0xfffff1e9) : const Color(0xfff4f5f7), borderRadius: BorderRadius.circular(5)), child: Text(track.format, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: track.encrypted ? const Color(0xffdc7957) : const Color(0xff858995))), const SizedBox(width: 10), IconButton(onPressed: () => _play(index), icon: Icon(_currentIndex == index ? Icons.pause_circle_filled : Icons.play_circle_outline, color: const Color(0xfff16b53)))]));
+  Widget _trackRow(int index, Track track, bool compact) => InkWell(
+        onTap: () => _play(index),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+          child: Row(children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(colors: track.encrypted ? [const Color(0xfff5aa93), const Color(0xffe85b48)] : [const Color(0xff8aa9f5), const Color(0xff547ce2)]),
+              ),
+              child: const Icon(Icons.music_note, color: Colors.white, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(track.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(track.artist, style: const TextStyle(fontSize: 11, color: Color(0xffa0a3ab))),
+            ])),
+            if (!compact) Expanded(flex: 1, child: Text(track.album, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: Color(0xff8d9099))),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+              decoration: BoxDecoration(color: track.encrypted ? const Color(0xfffff1e9) : const Color(0xfff4f5f7), borderRadius: BorderRadius.circular(5)),
+              child: Text(track.format, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: track.encrypted ? const Color(0xffdc7957) : const Color(0xff858995))),
+            ),
+            const SizedBox(width: 10),
+            IconButton(onPressed: () => _play(index), icon: Icon(_currentIndex == index ? Icons.pause_circle_filled : Icons.play_circle_outline, color: const Color(0xfff16b53))),
+          ]),
+        ),
+      );
 
   Widget _buildPlayerBar(bool compact) => Container(height: compact ? 142 : 86, padding: EdgeInsets.symmetric(horizontal: compact ? 16 : 34, vertical: 12), decoration: const BoxDecoration(color: Colors.white, border: Border(top: BorderSide(color: Color(0xffe9ebef))), boxShadow: [BoxShadow(color: Color(0x1020232b), blurRadius: 18, offset: Offset(0, -5))]), child: compact ? Column(children: [_nowPlaying(), const SizedBox(height: 7), _controls()]) : Row(children: [Expanded(child: _nowPlaying()), Expanded(child: _controls()), const SizedBox(width: 160)]));
   Widget _nowPlaying() => Row(children: [Container(width: 46, height: 46, decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: const Color(0xfff16b53)), child: const Icon(Icons.music_note, color: Colors.white)), const SizedBox(width: 11), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [Text(_currentIndex < 0 ? '还没有播放歌曲' : _tracks[_currentIndex].title, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)), const SizedBox(height: 4), Text(_currentIndex < 0 ? '导入本地音乐开始播放' : _tracks[_currentIndex].artist, style: const TextStyle(fontSize: 11, color: Color(0xffa2a5ad)))])), IconButton(onPressed: () => setState(() => _liked = !_liked), icon: Icon(_liked ? Icons.favorite : Icons.favorite_border, color: _liked ? const Color(0xfff16b53) : const Color(0xff90939c)))]);
